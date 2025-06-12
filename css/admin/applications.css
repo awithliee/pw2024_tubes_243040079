@@ -1,0 +1,74 @@
+
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 5px 10px;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .main-content {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-action {
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 5px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .stat-card.pending {
+            background: linear-gradient(45deg, #ffa726 0%, #fb8c00 100%);
+        }
+
+        .stat-card.reviewed {
+            background: linear-gradient(45deg, #42a5f5 0%, #1e88e5 100%);
+        }
+
+        .stat-card.interviewed {
+            background: linear-gradient(45deg, #ab47bc 0%, #8e24aa 100%);
+        }
+
+        .stat-card.offered {
+            background: linear-gradient(45deg, #66bb6a 0%, #43a047 100%);
+        }
+
+        .stat-card.rejected {
+            background: linear-gradient(45deg, #ef5350 0%, #d32f2f 100%);
+        }
+    

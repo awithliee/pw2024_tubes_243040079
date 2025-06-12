@@ -1,0 +1,44 @@
+.sidebar {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.sidebar .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin: 5px 10px;
+  transition: all 0.3s;
+}
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  transform: translateX(5px);
+}
+.card {
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+.main-content {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+.table-hover tbody tr:hover {
+  background-color: rgba(102, 126, 234, 0.1);
+}
+.btn-gradient {
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+}
+.btn-gradient:hover {
+  background: linear-gradient(45deg, #764ba2 0%, #667eea 100%);
+  color: white;
+}
+.job-description {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

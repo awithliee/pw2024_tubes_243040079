@@ -1,0 +1,65 @@
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 60px 0;
+}
+
+.job-card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  height: 100%;
+}
+
+.job-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.filter-section {
+  background-color: #f8f9fa;
+  padding: 30px 0;
+}
+
+.company-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.salary-badge {
+  background-color: #e8f5e8;
+  color: #198754;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.job-type-badge {
+  font-size: 0.75rem;
+  padding: 4px 8px;
+}
+
+.deadline-approaching {
+  color: #ff6b35;
+  font-weight: 500;
+}
+
+.deadline-passed {
+  color: #dc3545;
+  text-decoration: line-through;
+}
+
+.btn-apply {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border: none;
+  color: white;
+}
+
+.btn-apply:hover {
+  background: linear-gradient(45deg, #5a6fd8, #6a4190);
+  color: white;
+}

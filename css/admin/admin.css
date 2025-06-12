@@ -1,0 +1,54 @@
+.sidebar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: white;
+}
+.sidebar .nav-link {
+  color: white;
+  padding: 15px 20px;
+  border-radius: 0;
+  transition: all 0.3s ease;
+}
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+.main-content {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.stats-card .stats-icon {
+  font-size: 3rem;
+  opacity: 0.8;
+}
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.table th {
+  border-top: none;
+  color: #667eea;
+  font-weight: 600;
+}
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.navbar-brand {
+  font-weight: bold;
+  color: #667eea !important;
+}

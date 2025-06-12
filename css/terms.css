@@ -1,0 +1,14 @@
+.header {
+  background-color: #007bff;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.section {
+  padding: 30px 20px;
+}
+
+.section h2 {
+  margin-top: 30px;
+}
