@@ -16,19 +16,19 @@ try {
     $stmt = $db->query("SELECT COUNT(*) as total FROM users WHERE role_id = 2");
     $totalUsers = $stmt->fetch()['total'];
 
-    // Count companies
+    // hitung perusahaan
     $stmt = $db->query("SELECT COUNT(*) as total FROM companies");
     $totalCompanies = $stmt->fetch()['total'];
 
-    // Count jobs
+    // hiitung lowongan kerja
     $stmt = $db->query("SELECT COUNT(*) as total FROM jobs WHERE is_active = 1");
     $totalJobs = $stmt->fetch()['total'];
 
-    // Count applications
+    // hitung lamaran
     $stmt = $db->query("SELECT COUNT(*) as total FROM applications");
     $totalApplications = $stmt->fetch()['total'];
 
-    // Recent applications
+    // lamaran terbaru
     $stmt = $db->query("
         SELECT a.*, u.full_name, j.job_title, c.company_name 
         FROM applications a
@@ -40,7 +40,7 @@ try {
     ");
     $recentApplications = $stmt->fetchAll();
 
-    // Recent users
+    // user terbaru
     $stmt = $db->query("
         SELECT * FROM users 
         WHERE role_id = 2 

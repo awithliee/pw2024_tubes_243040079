@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Get users with roles
+// user details
 $stmt = $db->query("
     SELECT u.*, r.role_name 
     FROM users u 
@@ -79,7 +79,7 @@ $stmt = $db->query("
 ");
 $users = $stmt->fetchAll();
 
-// Get roles for drodbwn
+// dapatkan role
 $stmt = $db->query("SELECT * FROM roles ORDER BY role_name");
 $roles = $stmt->fetchAll();
 ?>

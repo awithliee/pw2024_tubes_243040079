@@ -89,7 +89,7 @@ try {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style-admin/applications.css">
- 
+
 </head>
 
 <body>
@@ -250,14 +250,14 @@ try {
                                                 <td><?= htmlspecialchars($app['company_name']) ?></td>
                                                 <td>
                                                     <?php
-                                                        $statusClassMap = [
-                                                            'Tertunda' => 'warning',
-                                                            'Ditinjau' => 'info',
-                                                            'Diwawancarai' => 'primary',
-                                                            'Diterima' => 'success',
-                                                            'Ditolak' => 'danger'
-                                                        ];
-                                                        $badgeClass = isset($statusClassMap[$app['application_status']]) ? $statusClassMap[$app['application_status']] : 'secondary';
+                                                    $statusClassMap = [
+                                                        'Tertunda' => 'warning',
+                                                        'Ditinjau' => 'info',
+                                                        'Diwawancarai' => 'primary',
+                                                        'Diterima' => 'success',
+                                                        'Ditolak' => 'danger'
+                                                    ];
+                                                    $badgeClass = isset($statusClassMap[$app['application_status']]) ? $statusClassMap[$app['application_status']] : 'secondary';
                                                     ?>
                                                     <span class="badge bg-<?= $badgeClass ?>">
                                                         <?= $app['application_status'] ?>
@@ -349,7 +349,7 @@ try {
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-  
+
 
     <script>
         $(document).ready(function() {

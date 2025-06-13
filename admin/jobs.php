@@ -34,7 +34,7 @@ if (isset($_GET['activate'])) {
     }
 }
 
-// Get all jobs with company information
+// lowngan perusahaan
 try {
     $stmt = $db->query("
         SELECT j.*, c.company_name, c.company_location, u.full_name as posted_by_name,
@@ -46,14 +46,14 @@ try {
     ");
     $jobs = $stmt->fetchAll();
 
-    // Get companies for add job form
+    // perusahaan untuk menambah lowongan
     $stmt = $db->query("SELECT * FROM companies ORDER BY company_name");
     $companies = $stmt->fetchAll();
 } catch (PDOException $e) {
     $error = "Error: " . $e->getMessage();
 }
 
-// Handle add job
+// tambah lowongan
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
     try {
         $stmt = $db->prepare("
