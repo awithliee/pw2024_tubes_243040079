@@ -12,7 +12,6 @@
                 <h5>Tautan Penting</h5>
                 <ul class="list-unstyled">
                     <li><a href="about.php" class="text-white">Tentang Kami</a></li>
-                    <li><a href="contact.php" class="text-white">Hubungi Kami</a></li>
                     <li><a href="privacy.php" class="text-white">Kebijakan Privasi</a></li>
                     <li><a href="terms.php" class="text-white">Syarat & Ketentuan</a></li>
                 </ul>
@@ -40,42 +39,46 @@
 </footer>
 
 <style>
-.footer {
-    background-color: #343a40;
-    color: white;
-    padding: 40px 0 20px 0;
-    margin-top: 50px;
-}
+    .footer {
+        background-color:
+            #343a40;
+        color: white;
+        padding: 40px 0 20px 0;
+        margin-top: 50px;
+    }
 
-.hero-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 100px 0;
-}
+    .hero-section {
+        background: linear-gradient(135deg,
+                #667eea 0%,
+                #764ba2 100%);
+        color: white;
+        padding: 100px 0;
+    }
 
-.stat-card {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    text-align: center;
-    margin-bottom: 30px;
-}
+    .stat-card {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-.feature-icon {
-    font-size: 3rem;
-    color: #667eea;
-    margin-bottom: 20px;
-}
+    .feature-icon {
+        font-size: 3rem;
+        color:
+            #667eea;
+        margin-bottom: 20px;
+    }
 
-.job-card {
-    border: none;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-    margin-bottom: 30px;
-}
+    .job-card {
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        margin-bottom: 30px;
+    }
 
-.job-card:hover {
-    transform: translateY(-5px);
-}
+    .job-card:hover {
+        transform: translateY(-5px);
+    }
 </style>

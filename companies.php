@@ -26,7 +26,7 @@ $countStmt->execute($params);
 $totalCompanies = $countStmt->fetch()['total'];
 $totalPages = ceil($totalCompanies / $limit);
 
-// Get companies with job count
+// perusahaan
 $query = "SELECT c.*, COUNT(j.job_id) as job_count 
           FROM companies c 
           LEFT JOIN jobs j ON c.company_id = j.company_id AND j.is_active = TRUE 
@@ -42,6 +42,19 @@ $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
 $companies = $stmt->fetchAll();
+
+//job tersedia
+$jobCountQuery = "SELECT COUNT(*) as total FROM jobs WHERE is_active = TRUE";
+$jobCountStmt = $db->prepare($jobCountQuery);
+$jobCountStmt->execute();
+$totalActiveJobs = $jobCountStmt->fetch()['total'];
+
+// Menghitung total pengguna yang telah berhasil mendapatkan pekerjaan
+$query = "SELECT COUNT(*) as total FROM users WHERE role_id = 2 AND is_active = TRUE";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$totalUsers = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
 ?>
 
 <!DOCTYPE html>
@@ -246,12 +259,6 @@ $companies = $stmt->fetchAll();
                 <div class="col-md-4 mb-4">
                     <div class="p-4">
                         <i class="fas fa-briefcase fa-3x text-primary mb-3"></i>
-                        <?php
-                        $jobCountQuery = "SELECT COUNT(*) as total FROM jobs WHERE is_active = TRUE";
-                        $jobCountStmt = $db->prepare($jobCountQuery);
-                        $jobCountStmt->execute();
-                        $totalActiveJobs = $jobCountStmt->fetch()['total'];
-                        ?>
                         <h3 class="fw-bold"><?php echo number_format($totalActiveJobs); ?></h3>
                         <p class="text-muted">Lowongan Aktif</p>
                     </div>
@@ -259,7 +266,7 @@ $companies = $stmt->fetchAll();
                 <div class="col-md-4 mb-4">
                     <div class="p-4">
                         <i class="fas fa-users fa-3x text-primary mb-3"></i>
-                        <h3 class="fw-bold">10,000+</h3>
+                        <h3 class="fw-bold"><?php echo number_format($totalUsers); ?></h3>
                         <p class="text-muted">Pelamar Berhasil</p>
                     </div>
                 </div>

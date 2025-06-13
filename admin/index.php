@@ -77,7 +77,7 @@ try {
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
                             <h2 class="mb-0">Dashboard</h2>
-                            <p class="text-muted">Welcome back, <?= htmlspecialchars($_SESSION['full_name']) ?>!</p>
+                            <p class="text-muted">Selamat Datang, <?= htmlspecialchars($_SESSION['full_name']) ?>!</p>
                         </div>
                         <div class="text-muted">
                             <i class="fas fa-calendar me-2"></i><?= date('l, d F Y') ?>
@@ -92,7 +92,7 @@ try {
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="mb-0"><?= $totalUsers ?></h3>
-                                            <p class="mb-0">Total Users</p>
+                                            <p class="mb-0">Total Pengguna</p>
                                         </div>
                                         <i class="fas fa-users fa-2x opacity-50"></i>
                                     </div>
@@ -105,7 +105,7 @@ try {
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="mb-0"><?= $totalCompanies ?></h3>
-                                            <p class="mb-0">Companies</p>
+                                            <p class="mb-0">Perusahaan</p>
                                         </div>
                                         <i class="fas fa-building fa-2x opacity-50"></i>
                                     </div>
@@ -118,7 +118,7 @@ try {
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="mb-0"><?= $totalJobs ?></h3>
-                                            <p class="mb-0">Active Jobs</p>
+                                            <p class="mb-0">Lowongan</p>
                                         </div>
                                         <i class="fas fa-briefcase fa-2x opacity-50"></i>
                                     </div>
@@ -131,7 +131,7 @@ try {
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
                                             <h3 class="mb-0"><?= $totalApplications ?></h3>
-                                            <p class="mb-0">Applications</p>
+                                            <p class="mb-0">Lamaran</p>
                                         </div>
                                         <i class="fas fa-file-alt fa-2x opacity-50"></i>
                                     </div>
@@ -147,21 +147,21 @@ try {
                             <div class="card">
                                 <div class="card-header bg-white">
                                     <h5 class="mb-0">
-                                        <i class="fas fa-file-alt me-2 text-primary"></i>Recent Applications
+                                        <i class="fas fa-file-alt me-2 text-primary"></i>Lamran Terbaru
                                     </h5>
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="table-responsive">
                                         <table class="table table-hover mb-0">
-                                            <thead class="table-light">
+                                            <th class="table-light">
                                                 <tr>
-                                                    <th>Applicant</th>
-                                                    <th>Job Title</th>
-                                                    <th>Company</th>
+                                                    <th>Pelamar</th>
+                                                    <th>Jabatan</th>
+                                                    <th>Perusahaan</th>
                                                     <th>Status</th>
-                                                    <th>Date</th>
+                                                    <th>Tanggal</th>
                                                 </tr>
-                                            </thead>
+                                            </th>
                                             <tbody>
                                                 <?php foreach ($recentApplications as $app): ?>
                                                     <tr>
@@ -188,7 +188,7 @@ try {
                             <div class="card">
                                 <div class="card-header bg-white">
                                     <h5 class="mb-0">
-                                        <i class="fas fa-user-plus me-2 text-success"></i>Recent Users
+                                        <i class="fas fa-user-plus me-2 text-success"></i>Pengguna Terbaru
                                     </h5>
                                 </div>
                                 <div class="card-body">

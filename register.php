@@ -54,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="css/register.css">
 
 </head>
+
 <body>
     <div class="register-container">
         <div class="register-card">
@@ -98,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <i class="fas fa-user me-2"></i>Nama Lengkap
                         </label>
                         <input type="text" class="form-control" id="full_name" name="full_name"
-                               placeholder="Masukkan nama lengkap Anda" required
-                               value="<?php echo isset($_POST['full_name']) ? htmlspecialchars($_POST['full_name']) : ''; ?>">
+                            placeholder="Masukkan nama lengkap Anda" required
+                            value="<?php echo isset($_POST['full_name']) ? htmlspecialchars($_POST['full_name']) : ''; ?>">
                     </div>
 
                     <div class="mb-3">
@@ -107,8 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <i class="fas fa-envelope me-2"></i>Email
                         </label>
                         <input type="email" class="form-control" id="email" name="email"
-                               placeholder="Masukkan email Anda" required
-                               value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                            placeholder="Masukkan email Anda" required
+                            value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
                     </div>
 
                     <div class="row">
@@ -117,14 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <i class="fas fa-lock me-2"></i>Password
                             </label>
                             <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="Minimal 6 karakter" required>
+                                placeholder="Minimal 6 karakter" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="confirm_password" class="form-label">
                                 <i class="fas fa-lock me-2"></i>Konfirmasi Password
                             </label>
                             <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                                   placeholder="Ulangi password" required>
+                                placeholder="Ulangi password" required>
                         </div>
                     </div>
 
@@ -133,8 +135,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <i class="fas fa-phone me-2"></i>Nomor Telepon
                         </label>
                         <input type="tel" class="form-control" id="phone_number" name="phone_number"
-                               placeholder="Masukkan nomor telepon Anda"
-                               value="<?php echo isset($_POST['phone_number']) ? htmlspecialchars($_POST['phone_number']) : ''; ?>">
+                            placeholder="Masukkan nomor telepon Anda"
+                            value="<?php echo isset($_POST['phone_number']) ? htmlspecialchars($_POST['phone_number']) : ''; ?>">
                     </div>
 
                     <div class="mb-4">
@@ -142,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <i class="fas fa-map-marker-alt me-2"></i>Alamat
                         </label>
                         <textarea class="form-control" id="address" name="address" rows="3"
-                                  placeholder="Masukkan alamat lengkap Anda"><?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?></textarea>
+                            placeholder="Masukkan alamat lengkap Anda"><?php echo isset($_POST['address']) ? htmlspecialchars($_POST['address']) : ''; ?></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-register w-100 mb-3">
@@ -164,4 +166,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </body>
+
 </html>

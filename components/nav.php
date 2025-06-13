@@ -9,16 +9,16 @@
                                 <i class="fas fa-home me-2"></i>Dashboard
                             </a>
                             <a href="users.php" class="nav-link">
-                                <i class="fas fa-users me-2"></i>Users
+                                <i class="fas fa-users me-2"></i>Kelola Pengguna
                             </a>
                             <a href="companies.php" class="nav-link">
-                                <i class="fas fa-building me-2"></i>Companies
+                                <i class="fas fa-building me-2"></i>Kelola Perusahaan
                             </a>
                             <a href="jobs.php" class="nav-link">
-                                <i class="fas fa-briefcase me-2"></i>Jobs
+                                <i class="fas fa-briefcase me-2"></i>Kelola Lowongan
                             </a>
                             <a href="applications.php" class="nav-link">
-                                <i class="fas fa-file-alt me-2"></i>Applications
+                                <i class="fas fa-file-alt me-2"></i>Kelola Lamaran
                             </a>
                             <a href="../index.php" class="nav-link mt-5">
                                 <i class="fa-solid fa-house"></i> Beranda

@@ -1,7 +1,5 @@
 <?php
-// admin/applications.php
 session_start();
-
 // Cek apakah user sudah login dan merupakan admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
     header('Location:../login.php');
@@ -10,7 +8,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
 
 require '../config/database.php';
 
-// Handle status update
+//satatus lamaran 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['update_status'])) {
     try {
         $stmt = $db->prepare("UPDATE applications SET application_status = ?, admin_notes = ? WHERE application_id = ?");
@@ -45,7 +43,7 @@ if (!empty($where_conditions)) {
     $where_clause = 'WHERE ' . implode(' AND ', $where_conditions);
 }
 
-// Get all applications with related data
+// ambil lamaran dan data relasi nya
 try {
     $sql = "
         SELECT a.*, u.full_name, u.email, u.phone_number, 
@@ -65,7 +63,7 @@ try {
     $stmt->execute($params);
     $applications = $stmt->fetchAll();
 
-    // Get companies for filter
+    // filter perusahaan
     $stmt = $db->query("SELECT * FROM companies ORDER BY company_name");
     $companies = $stmt->fetchAll();
 
@@ -105,8 +103,8 @@ try {
                     <!-- Header -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h2 class="mb-0">Applications Management</h2>
-                            <p class="text-muted">Manage all job applications</p>
+                            <h2 class="mb-0">Kelola Lamaran</h2>
+                            <p class="text-muted">Kelola semua</p>
                         </div>
                     </div>
 
@@ -125,45 +123,45 @@ try {
                         </div>
                     <?php endif; ?>
 
-                    <!-- Statistics Cards -->
+                    <!-- Status Cards -->
                     <div class="row mb-4">
                         <div class="col-md-2">
                             <div class="card stat-card pending">
                                 <div class="card-body text-center">
-                                    <h4 class="mb-0"><?= isset($stats['Pending']) ? $stats['Pending'] : 0 ?></h4>
-                                    <small>Pending</small>
+                                    <h4 class="mb-0"><?= isset($stats['Tertunda']) ? $stats['Tertunda'] : 0 ?></h4>
+                                    <small>Tertunda</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="card stat-card reviewed">
                                 <div class="card-body text-center">
-                                    <h4 class="mb-0"><?= isset($stats['Reviewed']) ? $stats['Reviewed'] : 0 ?></h4>
-                                    <small>Reviewed</small>
+                                    <h4 class="mb-0"><?= isset($stats['Ditinjau']) ? $stats['Ditinjau'] : 0 ?></h4>
+                                    <small>Ditinjau</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="card stat-card interviewed">
                                 <div class="card-body text-center">
-                                    <h4 class="mb-0"><?= isset($stats['Interviewed']) ? $stats['Interviewed'] : 0 ?></h4>
-                                    <small>Interviewed</small>
+                                    <h4 class="mb-0"><?= isset($stats['Diwawancarai']) ? $stats['Diwawancarai'] : 0 ?></h4>
+                                    <small>Diwawancarai</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="card stat-card offered">
                                 <div class="card-body text-center">
-                                    <h4 class="mb-0"><?= isset($stats['Offered']) ? $stats['Offered'] : 0 ?></h4>
-                                    <small>Offered</small>
+                                    <h4 class="mb-0"><?= isset($stats['Diterima']) ? $stats['Diterima'] : 0 ?></h4>
+                                    <small>Diterima</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="card stat-card rejected">
                                 <div class="card-body text-center">
-                                    <h4 class="mb-0"><?= isset($stats['Rejected']) ? $stats['Rejected'] : 0 ?></h4>
-                                    <small>Rejected</small>
+                                    <h4 class="mb-0"><?= isset($stats['Ditolak']) ? $stats['Ditolak'] : 0 ?></h4>
+                                    <small>Ditolak</small>
                                 </div>
                             </div>
                         </div>
@@ -186,11 +184,11 @@ try {
                                         <label class="form-label">Filter by Status</label>
                                         <select name="status" class="form-select">
                                             <option value="">All Status</option>
-                                            <option value="Pending" <?= $status_filter == 'Pending' ? 'selected' : '' ?>>Pending</option>
-                                            <option value="Reviewed" <?= $status_filter == 'Reviewed' ? 'selected' : '' ?>>Reviewed</option>
-                                            <option value="Interviewed" <?= $status_filter == 'Interviewed' ? 'selected' : '' ?>>Interviewed</option>
-                                            <option value="Offered" <?= $status_filter == 'Offered' ? 'selected' : '' ?>>Offered</option>
-                                            <option value="Rejected" <?= $status_filter == 'Rejected' ? 'selected' : '' ?>>Rejected</option>
+                                            <option value="Tertunda" <?= $status_filter == 'Tertunda' ? 'selected' : '' ?>>Tertunda</option>
+                                            <option value="Ditinjau" <?= $status_filter == 'Ditinjau' ? 'selected' : '' ?>>Ditinjau</option>
+                                            <option value="Diwawancarai" <?= $status_filter == 'Diwawancarai' ? 'selected' : '' ?>>Diwawancarai</option>
+                                            <option value="Diterima" <?= $status_filter == 'Diterima' ? 'selected' : '' ?>>Diterima</option>
+                                            <option value="Ditolak" <?= $status_filter == 'Ditolak' ? 'selected' : '' ?>>Ditolak</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
@@ -230,12 +228,12 @@ try {
                                     <thead class="table-light">
                                         <tr>
                                             <th>ID</th>
-                                            <th>Applicant</th>
-                                            <th>Job Title</th>
-                                            <th>Company</th>
+                                            <th>Pelamar</th>
+                                            <th>Jabatan</th>
+                                            <th>Perusahaan</th>
                                             <th>Status</th>
-                                            <th>Applied Date</th>
-                                            <th>Actions</th>
+                                            <th>Tanggal Ditetapkan</th>
+                                            <th>Tindakan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -253,11 +251,11 @@ try {
                                                 <td>
                                                     <?php
                                                         $statusClassMap = [
-                                                            'Pending' => 'warning',
-                                                            'Reviewed' => 'info',
-                                                            'Interviewed' => 'primary',
-                                                            'Offered' => 'success',
-                                                            'Rejected' => 'danger'
+                                                            'Tertunda' => 'warning',
+                                                            'Ditinjau' => 'info',
+                                                            'Diwawancarai' => 'primary',
+                                                            'Diterima' => 'success',
+                                                            'Ditolak' => 'danger'
                                                         ];
                                                         $badgeClass = isset($statusClassMap[$app['application_status']]) ? $statusClassMap[$app['application_status']] : 'secondary';
                                                     ?>
@@ -279,8 +277,9 @@ try {
                                                         onclick="updateStatus(<?= $app['application_id'] ?>, '<?= $app['application_status'] ?>', '<?= htmlspecialchars($app['admin_notes'] ?? '') ?>')">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
+
                                                     <?php if ($app['resume_file']): ?>
-                                                        <a href="../uploads/resumes/<?= $app['resume_file'] ?>"
+                                                        <a href="../cv/<?= $app['resume_file'] ?>"
                                                             class="btn btn-sm btn-outline-success btn-action"
                                                             target="_blank">
                                                             <i class="fas fa-download"></i>
@@ -320,7 +319,7 @@ try {
             <div class="modal-content">
                 <form method="POST">
                     <div class="modal-header">
-                        <h5 class="modal-title">Update Application Status</h5>
+                        <h5 class="modal-title">Edit satus lamaran</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -328,21 +327,21 @@ try {
                         <div class="mb-3">
                             <label class="form-label">Status</label>
                             <select name="status" id="updateStatus" class="form-select" required>
-                                <option value="Pending">Pending</option>
-                                <option value="Reviewed">Reviewed</option>
-                                <option value="Interviewed">Interviewed</option>
-                                <option value="Offered">Offered</option>
-                                <option value="Rejected">Rejected</option>
+                                <option value="Tertunda">Tertunda</option>
+                                <option value="Ditinjau">Ditinjau</option>
+                                <option value="Diwawancarai">Diwawancarai</option>
+                                <option value="Diterima">Diterima</option>
+                                <option value="Ditolak">Ditolak</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Admin Notes</label>
-                            <textarea name="admin_notes" id="updateNotes" class="form-control" rows="4" placeholder="Add notes about this application..."></textarea>
+                            <label class="form-label">Catatan</label>
+                            <textarea name="admin_notes" id="updateNotes" class="form-control" rows="4" placeholder="Ketikan sesuatu..."></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" name="update_status" class="btn btn-primary">Update Status</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" name="update_status" class="btn btn-primary">Kirim</button>
                     </div>
                 </form>
             </div>
@@ -350,9 +349,7 @@ try {
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/dataTables.bootstrap5.min.js"></script>
+  
 
     <script>
         $(document).ready(function() {
@@ -369,28 +366,28 @@ try {
             const details = `
                 <div class="row">
                     <div class="col-md-6">
-                        <h6 class="text-primary">Applicant Information</h6>
-                        <p><strong>Name:</strong> ${app.full_name}</p>
+                        <h6 class="text-primary">Informasi Lamaran</h6>
+                        <p><strong>Nama:</strong> ${app.full_name}</p>
                         <p><strong>Email:</strong> ${app.email}</p>
-                        <p><strong>Phone:</strong> ${app.phone_number || 'Not provided'}</p>
+                        <p><strong>Telepon:</strong> ${app.phone_number || 'Not provided'}</p>
                     </div>
                     <div class="col-md-6">
-                        <h6 class="text-primary">Job Information</h6>
-                        <p><strong>Job Title:</strong> ${app.job_title}</p>
-                        <p><strong>Company:</strong> ${app.company_name}</p>
-                        <p><strong>Job Type:</strong> ${app.job_type}</p>
-                        <p><strong>Salary Range:</strong> ${app.salary_range || 'Not specified'}</p>
+                        <h6 class="text-primary">Informasi Pekerjaan</h6>
+                        <p><strong>Jabatan:</strong> ${app.job_title}</p>
+                        <p><strong>Perusahaan:</strong> ${app.company_name}</p>
+                        <p><strong>Jenis Pekerjaan:</strong> ${app.job_type}</p>
+                        <p><strong>Gaji:</strong> ${app.salary_range || 'Not specified'}</p>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
                     <div class="col-12">
-                        <h6 class="text-primary">Application Details</h6>
+                        <h6 class="text-primary">Detail Lamaran</h6>
                         <p><strong>Status:</strong> <span class="badge bg-secondary">${app.application_status}</span></p>
-                        <p><strong>Applied Date:</strong> ${new Date(app.created_at).toLocaleDateString()}</p>
-                        ${app.cover_letter ? `<p><strong>Cover Letter:</strong></p><div class="bg-light p-3 rounded">${app.cover_letter}</div>` : ''}
-                        ${app.admin_notes ? `<p><strong>Admin Notes:</strong></p><div class="bg-warning bg-opacity-10 p-3 rounded">${app.admin_notes}</div>` : ''}
-                        ${app.resume_file ? `<p><strong>Resume:</strong> <a href="../uploads/resumes/${app.resume_file}" target="_blank" class="btn btn-sm btn-outline-primary">View Resume</a></p>` : ''}
+                        <p><strong>Tanggal Diterapkan:</strong> ${new Date(app.created_at).toLocaleDateString()}</p>
+                        ${app.cover_letter ? `<p><strong>Kata Pengantar:</strong></p><div class="bg-light p-3 rounded">${app.cover_letter}</div>` : ''}
+                        ${app.admin_notes ? `<p><strong>Catatan Admin:</strong></p><div class="bg-warning bg-opacity-10 p-3 rounded">${app.admin_notes}</div>` : ''}
+                        ${app.resume_file ? `<p><strong>CV:</strong> <a href="../cv/${app.resume_file}" target="_blank" class="btn btn-sm btn-outline-primary">Lihat CV</a></p>` : ''}
                     </div>
                 </div>
             `;

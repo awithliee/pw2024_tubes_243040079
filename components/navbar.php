@@ -26,9 +26,6 @@ $isAdmin = isset($_SESSION['role_id']) && $_SESSION['role_id'] == 1;
                 <li class="nav-item">
                     <a class="nav-link" href="about.php">Tentang Kami</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.php">Kontak</a>
-                </li>
             </ul>
             <div class="d-flex">
                 <?php if ($isLoggedIn): ?>

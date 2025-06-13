@@ -90,7 +90,7 @@ $roles = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - Lamarin Admin</title>
+    <title>Kelola Pengguna - Lamarin Admin</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/style-admin/adm-user.css">
@@ -105,9 +105,9 @@ $roles = $stmt->fetchAll();
             <div class="col-md-10 px-0">
                 <div class="main-content p-4">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="mb-0">User Management</h2>
+                        <h2 class="mb-0">Kelola Pengguna</h2>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal">
-                            <i class="fas fa-plus me-2"></i>Add New User
+                            <i class="fas fa-plus me-2"></i>Tambahkan Pengguna
                         </button>
                     </div>
 
@@ -132,13 +132,13 @@ $roles = $stmt->fetchAll();
                                     <thead class="table-light">
                                         <tr>
                                             <th>ID</th>
-                                            <th>Full Name</th>
+                                            <th>Nama Lengkap</th>
                                             <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Role</th>
+                                            <th>Telepon</th>
+                                            <th>Peran</th>
                                             <th>Status</th>
-                                            <th>Created</th>
-                                            <th>Actions</th>
+                                            <th>dibuat</th>
+                                            <th>tindakan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -194,90 +194,114 @@ $roles = $stmt->fetchAll();
         </div>
     </div>
 
-    <!-- User Modal -->
-    <div class="modal fade" id="userModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userModalTitle">Add New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    <!DOCTYPE html>
+    <html lang="id">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User Modal</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <!-- User Modal -->
+        <div class="modal fade" id="userModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="userModalTitle">Tambahkan Pengguna</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="POST" id="userForm">
+                        <div class="modal-body">
+                            <input type="hidden" name="action" id="userAction" value="create">
+                            <input type="hidden" name="user_id" id="userId">
+
+                            <div class="mb-3">
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control" name="nama_lengkap" id="namaLengkap" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" id="email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Kata Sandi</label>
+                                <input type="password" class="form-control" name="kata_sandi" id="kataSandi">
+                                <small class="form-text text-muted" id="passwordHelp" style="display: none;">*Biarkan kosong untuk menyimpan kata sandi saat ini</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Telepon</label>
+                                <input type="text" class="form-control" name="telepon" id="telepon">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Peran</label>
+                                <select class="form-select" name="role_id" id="roleId" required>
+                                    <option value="">Pilih Peran</option>
+                                    <option value="1">Admin</option>
+                                    <option value="2">User</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Alamat</label>
+                                <textarea class="form-control" name="address" id="address" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
                 </div>
-                <form method="POST" id="userForm">
-                    <div class="modal-body">
-                        <input type="hidden" name="action" id="userAction" value="create">
-                        <input type="hidden" name="user_id" id="userId">
-
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" name="full_name" id="fullName" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" id="email" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" id="password">
-                            <small class="form-text text-muted" id="passwordHelp">Leave blank to keep current password when editing</small>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" name="phone_number" id="phoneNumber">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Role</label>
-                            <select class="form-select" name="role_id" id="roleId" required>
-                                <?php foreach ($roles as $role): ?>
-                                    <option value="<?= $role['role_id'] ?>"><?= ucfirst($role['role_name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Address</label>
-                            <textarea class="form-control" name="address" id="address" rows="3"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save User</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function editUser(user) {
-            document.getElementById('userModalTitle').textContent = 'Edit User';
-            document.getElementById('userAction').value = 'update';
-            document.getElementById('userId').value = user.user_id;
-            document.getElementById('fullName').value = user.full_name;
-            document.getElementById('email').value = user.email;
-            document.getElementById('password').value = '';
-            document.getElementById('password').required = false;
-            document.getElementById('passwordHelp').style.display = 'block';
-            document.getElementById('phoneNumber').value = user.phone_number;
-            document.getElementById('roleId').value = user.role_id;
-            document.getElementById('address').value = user.address;
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+        <script>
+            function editUser(user) {
+                // Update modal title and form action
+                document.getElementById('userModalTitle').textContent = 'Edit Peengguna';
+                document.getElementById('userAction').value = 'update';
+                document.getElementById('userId').value = user.user_id;
 
-            new bootstrap.Modal(document.getElementById('userModal')).show();
-        }
+                // Populate form fields with consistent ID names
+                document.getElementById('namaLengkap').value = user.full_name;
+                document.getElementById('email').value = user.email;
+                document.getElementById('kataSandi').value = '';
+                document.getElementById('kataSandi').required = false;
+                document.getElementById('passwordHelp').style.display = 'block';
+                document.getElementById('telepon').value = user.phone_number;
+                document.getElementById('roleId').value = user.role_id;
+                document.getElementById('address').value = user.address;
 
-        // Reset form when modal is closed
-        document.getElementById('userModal').addEventListener('hidden.bs.modal', function() {
-            document.getElementById('userForm').reset();
-            document.getElementById('userModalTitle').textContent = 'Add New User';
-            document.getElementById('userAction').value = 'create';
-            document.getElementById('password').required = true;
-            document.getElementById('passwordHelp').style.display = 'none';
-        });
-    </script>
+                // Show modal
+                new bootstrap.Modal(document.getElementById('userModal')).show();
+            }
+
+            // Reset form when modal is closed
+            document.getElementById('userModal').addEventListener('hidden.bs.modal', function() {
+                document.getElementById('userForm').reset();
+                document.getElementById('userModalTitle').textContent = 'Tambahkan Pengguna';
+                document.getElementById('userAction').value = 'create';
+                document.getElementById('kataSandi').required = true;
+                document.getElementById('passwordHelp').style.display = 'none';
+            });
+
+            // Handle form submission (optional - for testing)
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Form submitted! (This is just for demo)');
+            });
+        </script>
+    </body>
+
+    </html>
 </body>
 
 </html>

@@ -2,7 +2,7 @@
 session_start();
 require_once '../config/database.php';
 
-// Check if user is logged in and is a regular user
+// login sebagai user biasa
 if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 2) {
     header('Location: login.php');
     exit();
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 2) {
 
 $user_id = $_SESSION['user_id'];
 
-// Get user information
+// user
 $query = "SELECT u.*, r.role_name FROM users u 
           JOIN roles r ON u.role_id = r.role_id 
           WHERE u.user_id = :user_id";
@@ -23,7 +23,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 $status_filter = isset($_GET['status']) ? $_GET['status'] : '';
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
-// Build query for applications with filters
+// wuery lamaran dgn filter
 $where_conditions = ["a.user_id = :user_id"];
 $params = [':user_id' => $user_id];
 
@@ -40,7 +40,7 @@ if (!empty($search)) {
 
 $where_clause = implode(' AND ', $where_conditions);
 
-// Get applications with job and company details
+// lamaran dan detail lowongan
 $applications_query = "SELECT 
     a.application_id,
     a.job_id,
@@ -71,11 +71,11 @@ $applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Get statistics
 $stats_query = "SELECT 
     COUNT(*) as total_applications,
-    SUM(CASE WHEN application_status = 'Pending' THEN 1 ELSE 0 END) as pending,
-    SUM(CASE WHEN application_status = 'Reviewed' THEN 1 ELSE 0 END) as reviewed,
-    SUM(CASE WHEN application_status = 'Interviewed' THEN 1 ELSE 0 END) as interviewed,
-    SUM(CASE WHEN application_status = 'Offered' THEN 1 ELSE 0 END) as offered,
-    SUM(CASE WHEN application_status = 'Rejected' THEN 1 ELSE 0 END) as rejected
+    SUM(CASE WHEN application_status = 'Tertunda' THEN 1 ELSE 0 END) as Tertunda,
+    SUM(CASE WHEN application_status = 'Ditinjau' THEN 1 ELSE 0 END) as Ditinjau,
+    SUM(CASE WHEN application_status = 'Diwawancarai' THEN 1 ELSE 0 END) as Diwawancarai,
+    SUM(CASE WHEN application_status = 'Diterima' THEN 1 ELSE 0 END) as Diterima,
+    SUM(CASE WHEN application_status = 'Ditolak' THEN 1 ELSE 0 END) as Ditolak
 FROM applications 
 WHERE user_id = :user_id";
 
@@ -84,26 +84,26 @@ $stats_stmt->bindParam(':user_id', $user_id);
 $stats_stmt->execute();
 $stats = $stats_stmt->fetch(PDO::FETCH_ASSOC);
 
-// Function to get status badge class
+// untuk mendapatkan status lencana
 function getStatusBadgeClass($status) {
     switch($status) {
-        case 'Pending': return 'bg-warning text-dark';
-        case 'Reviewed': return 'bg-info';
-        case 'Interviewed': return 'bg-primary';
-        case 'Offered': return 'bg-success';
-        case 'Rejected': return 'bg-danger';
+        case 'Tertunda': return 'bg-warning text-dark';
+        case 'Ditinjau': return 'bg-info';
+        case 'Diwawancarai': return 'bg-primary';
+        case 'Diterima': return 'bg-success';
+        case 'Ditolak': return 'bg-danger';
         default: return 'bg-secondary';
     }
 }
 
-// Function to get status icon
+// untuk mendaapatkan status ikon
 function getStatusIcon($status) {
     switch($status) {
-        case 'Pending': return 'fas fa-clock';
-        case 'Reviewed': return 'fas fa-eye';
-        case 'Interviewed': return 'fas fa-users';
-        case 'Offered': return 'fas fa-check-circle';
-        case 'Rejected': return 'fas fa-times-circle';
+        case 'Tertunda': return 'fas fa-clock';
+        case 'Ditinjau': return 'fas fa-eye';
+        case 'Diwawancarai': return 'fas fa-users';
+        case 'Diterima': return 'fas fa-check-circle';
+        case 'Ditolak': return 'fas fa-times-circle';
         default: return 'fas fa-question-circle';
     }
 }
@@ -118,138 +118,7 @@ function getStatusIcon($status) {
     <title>Lamaran Saya - Lamarin Job Portal</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin: 5px 15px;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            transform: translateX(5px);
-        }
-
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .stat-card-pending {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            color: #333;
-        }
-
-        .stat-card-success {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-
-        .stat-card-info {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            color: #333;
-        }
-
-        .application-card {
-            border-left: 5px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .application-card:hover {
-            border-left-color: #764ba2;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .status-badge {
-            font-size: 0.8rem;
-            padding: 5px 10px;
-            border-radius: 20px;
-        }
-
-        .job-meta {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .company-info {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 10px;
-        }
-
-        .filter-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-filter {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        .btn-filter:hover {
-            background: rgba(255, 255, 255, 0.3);
-            color: white;
-        }
-
-        .no-applications {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 15px;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #667eea;
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            left: 11px;
-            top: 16px;
-            width: 2px;
-            height: calc(100% - 8px);
-            background: #e9ecef;
-        }
-
-        .timeline-item:last-child::after {
-            display: none;
-        }
-    </style>
+<link rel="stylesheet" href="../css/style-user/my-app.css">
 </head>
 
 <body class="bg-light">
@@ -284,7 +153,6 @@ function getStatusIcon($status) {
 
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10">
-                <!-- Top Navigation -->
                 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4 rounded-bottom">
                     <div class="container-fluid">
                         <span class="navbar-brand mb-0 h1">Lamaran Saya</span>
@@ -297,7 +165,6 @@ function getStatusIcon($status) {
                 </nav>
 
                 <div class="container-fluid px-4">
-                    <!-- Statistics Cards -->
                     <div class="row mb-4">
                         <div class="col-md-2 mb-3">
                             <div class="card stat-card">
@@ -309,11 +176,11 @@ function getStatusIcon($status) {
                             </div>
                         </div>
                         <div class="col-md-2 mb-3">
-                            <div class="card stat-card-pending">
+                            <div class="card stat-card-Tertunda">
                                 <div class="card-body text-center p-3">
                                     <i class="fas fa-clock fa-2x mb-2"></i>
-                                    <h4><?php echo $stats['pending']; ?></h4>
-                                    <small>Pending</small>
+                                    <h4><?php echo $stats['Tertunda']; ?></h4>
+                                    <small>Tertunda</small>
                                 </div>
                             </div>
                         </div>
@@ -321,8 +188,8 @@ function getStatusIcon($status) {
                             <div class="card stat-card-info">
                                 <div class="card-body text-center p-3">
                                     <i class="fas fa-eye fa-2x mb-2"></i>
-                                    <h4><?php echo $stats['reviewed']; ?></h4>
-                                    <small>Reviewed</small>
+                                    <h4><?php echo $stats['Ditinjau']; ?></h4>
+                                    <small>Ditinjau</small>
                                 </div>
                             </div>
                         </div>
@@ -330,7 +197,7 @@ function getStatusIcon($status) {
                             <div class="card stat-card-info">
                                 <div class="card-body text-center p-3">
                                     <i class="fas fa-users fa-2x mb-2"></i>
-                                    <h4><?php echo $stats['interviewed']; ?></h4>
+                                    <h4><?php echo $stats['Diwawancarai']; ?></h4>
                                     <small>Interview</small>
                                 </div>
                             </div>
@@ -339,8 +206,8 @@ function getStatusIcon($status) {
                             <div class="card stat-card-success">
                                 <div class="card-body text-center p-3">
                                     <i class="fas fa-check-circle fa-2x mb-2"></i>
-                                    <h4><?php echo $stats['offered']; ?></h4>
-                                    <small>Offered</small>
+                                    <h4><?php echo $stats['Diterima']; ?></h4>
+                                    <small>Diterima</small>
                                 </div>
                             </div>
                         </div>
@@ -348,46 +215,13 @@ function getStatusIcon($status) {
                             <div class="card text-white" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);">
                                 <div class="card-body text-center p-3">
                                     <i class="fas fa-times-circle fa-2x mb-2"></i>
-                                    <h4><?php echo $stats['rejected']; ?></h4>
-                                    <small>Rejected</small>
+                                    <h4><?php echo $stats['Ditolak']; ?></h4>
+                                    <small>Ditolak</small>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Filter and Search -->
-                    <div class="card filter-card mb-4">
-                        <div class="card-body">
-                            <form method="GET" class="row g-3">
-                                <div class="col-md-4">
-                                    <label class="form-label">
-                                        <i class="fas fa-filter me-1"></i>Filter Status
-                                    </label>
-                                    <select name="status" class="form-select btn-filter">
-                                        <option value="">Semua Status</option>
-                                        <option value="Pending" <?php echo $status_filter == 'Pending' ? 'selected' : ''; ?>>Pending</option>
-                                        <option value="Reviewed" <?php echo $status_filter == 'Reviewed' ? 'selected' : ''; ?>>Reviewed</option>
-                                        <option value="Interviewed" <?php echo $status_filter == 'Interviewed' ? 'selected' : ''; ?>>Interviewed</option>
-                                        <option value="Offered" <?php echo $status_filter == 'Offered' ? 'selected' : ''; ?>>Offered</option>
-                                        <option value="Rejected" <?php echo $status_filter == 'Rejected' ? 'selected' : ''; ?>>Rejected</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">
-                                        <i class="fas fa-search me-1"></i>Cari Pekerjaan/Perusahaan
-                                    </label>
-                                    <input type="text" name="search" class="form-control btn-filter" 
-                                           placeholder="Masukkan nama pekerjaan atau perusahaan..."
-                                           value="<?php echo htmlspecialchars($search); ?>">
-                                </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-light w-100">
-                                        <i class="fas fa-search me-1"></i>Cari
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
 
                     <!-- Applications List -->
                     <?php if (empty($applications)): ?>
@@ -487,32 +321,23 @@ function getStatusIcon($status) {
 
                                             <?php if ($app['resume_file']): ?>
                                                 <div class="mt-3">
-                                                    <a href="uploads/resumes/<?php echo $app['resume_file']; ?>" target="_blank" class="btn btn-outline-primary btn-sm w-100">
+                                                    <a href="../cv/<?php echo $app['resume_file']; ?>" target="_blank" class="btn btn-outline-primary btn-sm w-100">
                                                         <i class="fas fa-file-pdf me-1"></i>Lihat Resume
                                                     </a>
                                                 </div>
                                             <?php endif; ?>
-
-                                            <!-- Additional actions could go here -->
-                                            <div class="mt-3">
-                                                <button class="btn btn-outline-secondary btn-sm w-100" onclick="showApplicationDetails(<?php echo $app['application_id']; ?>)">
-                                                    <i class="fas fa-info-circle me-1"></i>Detail Lengkap
-                                                </button>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
-
-                    <!-- Pagination could be added here if needed -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for Application Details -->
+    <!-- Modal lamaran Details -->
     <div class="modal fade" id="applicationModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -530,8 +355,7 @@ function getStatusIcon($status) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
         function showApplicationDetails(applicationId) {
-            // This function would load detailed application information
-            // For now, just show a placeholder
+            // tampillkan place holder
             document.getElementById('modalContent').innerHTML = `
                 <div class="text-center p-4">
                     <i class="fas fa-info-circle fa-3x text-primary mb-3"></i>
@@ -543,12 +367,6 @@ function getStatusIcon($status) {
             const modal = new bootstrap.Modal(document.getElementById('applicationModal'));
             modal.show();
         }
-
-        // Auto-refresh status every 5 minutes
-        setInterval(function() {
-            // You could add an AJAX call here to refresh application statuses
-            console.log('Checking for status updates...');
-        }, 300000); // 5 minutes
     </script>
 </body>
 

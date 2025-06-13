@@ -1,5 +1,5 @@
 <?php
-// Start the session if it's not already started
+// Start sesion jika belum dimulai
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }

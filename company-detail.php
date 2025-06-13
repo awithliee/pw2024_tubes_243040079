@@ -39,57 +39,7 @@ $jobCount = $jobCountStmt->fetch();
     <title><?php echo htmlspecialchars($company['company_name']); ?> - Detail Perusahaan - Lamarin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .company-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 0;
-        }
-
-        .company-icon {
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            font-size: 3rem;
-            color: white;
-            border-radius: 50%;
-        }
-
-        .info-card {
-            border: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        .company-description {
-            line-height: 1.8;
-            text-align: justify;
-        }
-
-        .contact-info {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 1.5rem;
-        }
-
-        .section-title {
-            position: relative;
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
-        }
-        .job-count-badge {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link rel="stylesheet" href="css/comp-d.css">
 </head>
 
 <body>
@@ -210,29 +160,6 @@ $jobCount = $jobCountStmt->fetch();
                                 <i class="fas fa-calendar text-success me-1"></i>
                                 <?php echo date('F Y', strtotime($company['created_at'])); ?>
                             </p>
-                        </div>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Tertarik dengan Perusahaan Ini?</h5>
-                            <p class="card-text text-muted">Lihat semua lowongan yang tersedia dan mulai karir impian Anda!</p>
-
-                            <?php if ($jobCount['total_jobs'] > 0): ?>
-                                <a href="jobs.php?company=<?php echo $company['company_id']; ?>" class="btn btn-primary w-100 mb-2">
-                                    <i class="fas fa-briefcase me-1"></i>Lihat Lowongan (<?php echo $jobCount['total_jobs']; ?>)
-                                </a>
-                            <?php else: ?>
-                                <div class="alert alert-info mb-2">
-                                    <i class="fas fa-info-circle me-1"></i>
-                                    Belum ada lowongan aktif saat ini
-                                </div>
-                            <?php endif; ?>
-
-                            <a href="companies.php" class="btn btn-outline-primary w-100">
-                                <i class="fas fa-building me-1"></i>Lihat Perusahaan Lain
-                            </a>
                         </div>
                     </div>
                 </div>

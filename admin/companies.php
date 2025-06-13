@@ -84,7 +84,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Companies Management - Lamarin Admin</title>
+    <title>Kelola Perusahaan - Lamarin Admin</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../css/style-admin/adm-comp.css">
@@ -102,11 +102,11 @@ try {
                     <!-- Header -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h2 class="mb-0">Companies Management</h2>
-                            <p class="text-muted">Manage all companies in the system</p>
+                            <h2 class="mb-0">Kelola Perusahaan</h2>
+                            <p class="text-muted">Kelola Semua Perusahaan</p>
                         </div>
                         <button class="btn btn-gradient" data-bs-toggle="modal" data-bs-target="#addCompanyModal">
-                            <i class="fas fa-plus me-2"></i>Add New Company
+                            <i class="fas fa-plus me-2"></i>Tambahkan Perusahaan
                         </button>
                     </div>
 
@@ -128,24 +128,24 @@ try {
                     <div class="card">
                         <div class="card-header bg-white">
                             <h5 class="mb-0">
-                                <i class="fas fa-building me-2 text-primary"></i>All Companies
+                                <i class="fas fa-building me-2 text-primary"></i>Semua Perusahaan
                             </h5>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover mb-0">
-                                    <thead class="table-light">
+                                    <th class="table-header">
                                         <tr>
                                             <th>ID</th>
-                                            <th>Company Name</th>
-                                            <th>Industry</th>
-                                            <th>Location</th>
-                                            <th>Total Jobs</th>
-                                            <th>Created By</th>
-                                            <th>Created Date</th>
-                                            <th>Actions</th>
+                                            <th>Nama Perusahaan</th>
+                                            <th>Industri</th>
+                                            <th>Lokasi</th>
+                                            <th>Jumlah Pekerjaan</th>
+                                            <th>Di buat oleh</th>
+                                            <th>Tanggal Dibuat</th>
+                                            <th>Tindakan</th>
                                         </tr>
-                                    </thead>
+                                    </th>
                                     <tbody>
                                         <?php foreach ($companies as $company): ?>
                                             <tr>
@@ -163,7 +163,7 @@ try {
                                                 </td>
                                                 <td><?= htmlspecialchars($company['company_location']) ?></td>
                                                 <td>
-                                                    <span class="badge bg-info"><?= $company['total_jobs'] ?> jobs</span>
+                                                    <span class="badge bg-info"><?= $company['total_jobs'] ?> Pekerjaan</span>
                                                 </td>
                                                 <td><?= htmlspecialchars($company['created_by_name']) ?></td>
                                                 <td><?= date('d M Y', strtotime($company['created_at'])) ?></td>
@@ -187,12 +187,12 @@ try {
         </div>
     </div>
 
-    <!-- Add Company Modal -->
+    <!-- tambahkan Modal -->
     <div class="modal fade" id="addCompanyModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add New Company</h5>
+                    <h5 class="modal-title">Tambahkan perusahaan baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST">
@@ -201,13 +201,13 @@ try {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Company Name *</label>
+                                    <label class="form-label">Nama Perusahaan*</label>
                                     <input type="text" class="form-control" name="company_name" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Industry *</label>
+                                    <label class="form-label">Industri *</label>
                                     <input type="text" class="form-control" name="industry" required>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@ try {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Location *</label>
+                                    <label class="form-label">Lokasi *</label>
                                     <input type="text" class="form-control" name="company_location" required>
                                 </div>
                             </div>
@@ -227,17 +227,17 @@ try {
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Address</label>
+                            <label class="form-label">Alamat</label>
                             <textarea class="form-control" name="company_address" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Description</label>
+                            <label class="form-label">Deskripsi</label>
                             <textarea class="form-control" name="company_description" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-gradient">Add Company</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-gradient">Tambahkan Perusahaan</button>
                     </div>
                 </form>
             </div>
@@ -249,7 +249,7 @@ try {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Company</h5>
+                    <h5 class="modal-title">Edit Perusahaan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" id="editCompanyForm">
@@ -259,13 +259,13 @@ try {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Company Name *</label>
+                                    <label class="form-label">Nama Perusahaan *</label>
                                     <input type="text" class="form-control" name="company_name" id="edit_company_name" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Industry *</label>
+                                    <label class="form-label">Industri *</label>
                                     <input type="text" class="form-control" name="industry" id="edit_industry" required>
                                 </div>
                             </div>
@@ -273,7 +273,7 @@ try {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Location *</label>
+                                    <label class="form-label">Lokasi *</label>
                                     <input type="text" class="form-control" name="company_location" id="edit_company_location" required>
                                 </div>
                             </div>
@@ -285,17 +285,17 @@ try {
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Address</label>
+                            <label class="form-label">Alamat</label>
                             <textarea class="form-control" name="company_address" id="edit_company_address" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Description</label>
+                            <label class="form-label">Deskripsi</label>
                             <textarea class="form-control" name="company_description" id="edit_company_description" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-gradient">Update Company</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-gradient">Perbarui Perusahaan</button>
                     </div>
                 </form>
             </div>

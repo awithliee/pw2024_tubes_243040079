@@ -7,10 +7,10 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 12;
 $offset = ($page - 1) * $limit;
 
-// Simple search functionality - hanya keyword
+// Simple search keyword
 $searchKeyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 
-// Build query
+// buat query
 $whereConditions = ["j.is_active = 1"];
 $params = [];
 
@@ -21,7 +21,7 @@ if (!empty($searchKeyword)) {
 
 $whereClause = implode(' AND ', $whereConditions);
 
-// Get total count for pagination
+// total hitung page
 $countQuery = "SELECT COUNT(*) as total 
                FROM jobs j 
                JOIN companies c ON j.company_id = c.company_id 
@@ -31,7 +31,7 @@ $countStmt->execute($params);
 $totalJobs = $countStmt->fetch()['total'];
 $totalPages = ceil($totalJobs / $limit);
 
-// Get jobs with company information
+// job dengan informasi pperusahaan
 $query = "SELECT j.*, c.company_name, c.company_location, c.industry, c.website
           FROM jobs j 
           JOIN companies c ON j.company_id = c.company_id 
@@ -47,7 +47,19 @@ $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
 $jobs = $stmt->fetchAll();
 
-// Format date function
+//perusahaan
+$companyCountQuery = "SELECT COUNT(DISTINCT c.company_id) as total FROM companies c JOIN jobs j ON c.company_id = j.company_id WHERE j.is_active = 1";
+$companyCountStmt = $db->prepare($companyCountQuery);
+$companyCountStmt->execute();
+$totalActiveCompanies = $companyCountStmt->fetch()['total'];
+
+// Menghitung total pengguna yang telah berhasil mendapatkan pekerjaan
+$query = "SELECT COUNT(*) as total FROM users WHERE role_id = 2 AND is_active = TRUE";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$totalUsers = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+// Format waktu
 function formatTanggal($tanggal)
 {
     if (empty($tanggal)) return '';
@@ -69,7 +81,7 @@ function formatTanggal($tanggal)
     return $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
 }
 
-// Function to check if deadline is approaching (within 7 days)
+// cek jika mendekati deadline
 function isDeadlineApproaching($deadline)
 {
     if (empty($deadline)) return false;
@@ -79,7 +91,7 @@ function isDeadlineApproaching($deadline)
     return $daysDiff <= 7 && $daysDiff > 0;
 }
 
-// Function to check if deadline has passed
+// cek deadline
 function isDeadlinePassed($deadline)
 {
     if (empty($deadline)) return false;
@@ -96,14 +108,14 @@ function isDeadlinePassed($deadline)
     <title>Daftar Lowongan - Lamarin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="css/jobs.css">
+    <link rel="stylesheet" href="css/jobs.css">
 </head>
 
 <body>
     <!-- Navbar -->
     <?php include 'components/navbar.php'; ?>
 
-    <!-- Hero Section -->
+    <!-- Hero-Section -->
     <section class="hero-section">
         <div class="container">
             <div class="text-center">
@@ -113,7 +125,7 @@ function isDeadlinePassed($deadline)
         </div>
     </section>
 
-    <!-- Search Section - Simplified -->
+    <!-- Search-Section  -->
     <section class="filter-section">
         <div class="container">
             <div class="row justify-content-center">
@@ -247,7 +259,7 @@ function isDeadlinePassed($deadline)
                                         </div>
                                     <?php endif; ?>
 
-                                    <!-- Posted Date -->
+                                    <!-- waktu post -->
                                     <div class="mb-3">
                                         <small class="text-muted">
                                             <i class="fas fa-calendar me-1"></i>
@@ -256,7 +268,7 @@ function isDeadlinePassed($deadline)
                                     </div>
                                 </div>
 
-                                <!-- Card Footer -->
+                                <!-- kartu footer-->
                                 <div class="card-footer bg-white border-top-0 pt-0">
                                     <?php if (!isDeadlinePassed($job['application_deadline'])): ?>
                                         <a href="job-detail.php?id=<?php echo $job['job_id']; ?>"
@@ -331,7 +343,7 @@ function isDeadlinePassed($deadline)
         </div>
     </section>
 
-    <!-- Quick Stats -->
+    <!-- statistik -->
     <section class="bg-light py-4">
         <div class="container">
             <div class="row text-center">
@@ -345,12 +357,6 @@ function isDeadlinePassed($deadline)
                 <div class="col-md-4 mb-3">
                     <div class="p-3">
                         <i class="fas fa-building fa-2x text-primary mb-2"></i>
-                        <?php
-                        $companyCountQuery = "SELECT COUNT(DISTINCT c.company_id) as total FROM companies c JOIN jobs j ON c.company_id = j.company_id WHERE j.is_active = 1";
-                        $companyCountStmt = $db->prepare($companyCountQuery);
-                        $companyCountStmt->execute();
-                        $totalActiveCompanies = $companyCountStmt->fetch()['total'];
-                        ?>
                         <h4 class="fw-bold"><?php echo number_format($totalActiveCompanies); ?></h4>
                         <p class="text-muted mb-0">Perusahaan Aktif</p>
                     </div>
@@ -358,7 +364,7 @@ function isDeadlinePassed($deadline)
                 <div class="col-md-4 mb-3">
                     <div class="p-3">
                         <i class="fas fa-users fa-2x text-primary mb-2"></i>
-                        <h4 class="fw-bold">5,000+</h4>
+                        <h4 class="fw-bold"><?php echo number_format($totalUsers); ?></h4>
                         <p class="text-muted mb-0">Pelamar Berhasil</p>
                     </div>
                 </div>

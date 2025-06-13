@@ -34,7 +34,7 @@ if ($_POST) {
             if ($user && password_verify($password, $user['password'])) {
                 // Login berhasil
                 createSession($user['user_id'], $user['role_id'], $user['full_name'], $user['email']);
-                
+
                 // Redirect berdasarkan role setelah login berhasil
                 if ($user['role_id'] == 1) { // Admin
                     header('Location: index.php');
@@ -59,127 +59,88 @@ if ($_POST) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Lamarin</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .login-container {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .login-header h1 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .login-header p {
-            color: #666;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-    </style>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
     <div class="login-container">
-        <div class="login-header">
-            <h1>Lamarin</h1>
-            <p>Silakan login untuk melanjutkan</p>
-        </div>
-
-        <?php if ($error): ?>
-            <div class="error"><?php echo $error; ?></div>
-        <?php endif; ?>
-
-        <form method="POST">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required
-                    value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+        <div class="login-card">
+            <div class="login-header">
+                <h2 class="mb-0">
+                    <i class="fas fa-sign-in-alt me-2"></i>
+                    Masuk ke Lamarin
+                </h2>
+                <p class="mb-0 mt-2 opacity-75">Silakan login untuk melanjutkan</p>
             </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+            <div class="login-body">
+                <!-- Success Message -->
+                <?php if (isset($_GET['registered']) && $_GET['registered'] == 'true'): ?>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Pendaftaran berhasil! Silakan login dengan akun Anda.
+                    </div>
+                <?php endif; ?>
+
+                <!-- Error Alert -->
+                <?php if ($error): ?>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <?php echo htmlspecialchars($error); ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Login Form -->
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </label>
+                        <input type="email"
+                            class="form-control"
+                            id="email"
+                            name="email"
+                            placeholder="Masukkan email Anda"
+                            required
+                            value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>Password
+                        </label>
+                        <input type="password"
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Masukkan password Anda"
+                            required>
+                    </div>
+
+                    <button type="submit" class="btn btn-login text-white w-100 mb-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                </form>
+
+                <!-- Register Link -->
+                <div class="text-center">
+                    <p class="mb-0">Belum punya akun?
+                        <a href="register.php" class="text-decoration-none">Daftar di sini</a>
+                    </p>
+                    <a href="index.php" class="text-muted text-decoration-none">
+                        <i class="fas fa-arrow-left me-1"></i>Kembali ke Beranda
+                    </a>
+                </div>
             </div>
-
-            <button type="submit" class="btn-login">Login</button>
-        </form>
-
-        <div style="text-align: center; margin-top: 20px; color: #666;">
-            <small>Default admin: admin@lamarin.com</small>
         </div>
     </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </body>
 
 </html>

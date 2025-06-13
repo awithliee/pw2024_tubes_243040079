@@ -2,7 +2,7 @@
 session_start();
 require_once '../config/database.php';
 
-// Check if user is logged in and is a regular user
+// check login sebagai user biasa
 if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 2) {
     header('Location: login.php');
     exit();
@@ -12,14 +12,14 @@ $user_id = $_SESSION['user_id'];
 $message = '';
 $error = '';
 
-// Handle form submission
+// handle kirim formulir
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $full_name = trim($_POST['full_name']);
     $email = trim($_POST['email']);
     $phone_number = trim($_POST['phone_number']);
     $address = trim($_POST['address']);
     
-    // Validate required fields
+    // Validasi input
     if (empty($full_name) || empty($email)) {
         $error = 'Nama lengkap dan email harus diisi!';
     } else {
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Get current user data
+// data user terbaru
 $query = "SELECT * FROM users WHERE user_id = :user_id";
 $stmt = $db->prepare($query);
 $stmt->bindParam(':user_id', $user_id);
@@ -119,91 +119,8 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
     <title>Profile - Lamarin Job Portal</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .sidebar {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar .nav-link {
-            color: rgba(255, 255, 255, 0.8);
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin: 5px 15px;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            transform: translateX(5px);
-        }
-
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .profile-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #5a67d8 0%, #6b5b95 100%);
-            transform: translateY(-2px);
-        }
-
-        .profile-photo-preview {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border: 5px solid white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .upload-area {
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .upload-area:hover {
-            border-color: #667eea;
-            background-color: #f8f9ff;
-        }
-
-        .file-info {
-            font-size: 0.9em;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .current-file {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-    </style>
+<link rel="stylesheet" href="../css/style-user/profile.css">
 </head>
-
 <body class="bg-light">
     <div class="container-fluid">
         <div class="row">

@@ -23,85 +23,88 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $messageType = 'danger';
     } else {
         // Cek apakah user sudah pernah melamar untuk job ini
-        $checkQuery = "SELECT application_id FROM applications WHERE job_id = :job_id AND user_id = :user_id";
-        $checkStmt = $db->prepare($checkQuery);
-        $checkStmt->bindParam(':job_id', $job_id);
-        $checkStmt->bindParam(':user_id', $user_id);
-        $checkStmt->execute();
-        
-        if ($checkStmt->fetch()) {
-            $message = 'Anda sudah pernah melamar untuk pekerjaan ini.';
-            $messageType = 'warning';
-        } else {
-            // Handle file upload
-            $cv_filename = null;
-            if (isset($_FILES['resume_file']) && $_FILES['resume_file']['error'] === UPLOAD_ERR_OK) {
-                $upload_dir = 'users/uploads/resumes/';
-                
-                // Buat folder jika belum ada
-                if (!is_dir($upload_dir)) {
-                    mkdir($upload_dir, 0755, true);
-                }
-                
-                $file_tmp = $_FILES['resume_file']['tmp_name'];
-                $file_name = $_FILES['resume_file']['name'];
-                $file_size = $_FILES['resume_file']['size'];
-                $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-                
-                // Validasi file
-                $allowed_ext = ['pdf', 'doc', 'docx'];
-                $max_size = 5 * 1024 * 1024; // 5MB
-                
-                if (!in_array($file_ext, $allowed_ext)) {
-                    $message = 'Format file tidak diizinkan. Gunakan PDF, DOC, atau DOCX.';
-                    $messageType = 'danger';
-                } elseif ($file_size > $max_size) {
-                    $message = 'Ukuran file terlalu besar. Maksimal 5MB.';
-                    $messageType = 'danger';
-                } else {
-                    // Generate nama file unik
-                    $cv_filename = 'cv_' . $user_id . '_' . $job_id . '_' . time() . '.' . $file_ext;
-                    $upload_path = $upload_dir . $cv_filename;
-                    
-                    if (!move_uploaded_file($file_tmp, $upload_path)) {
-                        $message = 'Gagal mengupload file CV.';
-                        $messageType = 'danger';
-                        $cv_filename = null;
-                    }
-                }
-            }
+        try {
+            $checkQuery = "SELECT application_id FROM applications WHERE job_id = :job_id AND user_id = :user_id";
+            $checkStmt = $db->prepare($checkQuery);
+            $checkStmt->bindParam(':job_id', $job_id, PDO::PARAM_INT);
+            $checkStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+            $checkStmt->execute();
             
-            // Insert lamaran ke database jika tidak ada error
-            if (empty($message)) {
-                try {
-                    $insertQuery = "INSERT INTO applications (job_id, user_id, cover_letter, resume_file, application_status, created_at) 
-                                   VALUES (:job_id, :user_id, :cover_letter, :resume_file, 'Pending', NOW())";
-                    $insertStmt = $db->prepare($insertQuery);
-                    $insertStmt->bindParam(':job_id', $job_id);
-                    $insertStmt->bindParam(':user_id', $user_id);
-                    $insertStmt->bindParam(':cover_letter', $cover_letter);
-                    $insertStmt->bindParam(':resume_file', $cv_filename);
+            if ($checkStmt->fetch(PDO::FETCH_ASSOC)) {
+                $message = 'Anda sudah pernah melamar untuk pekerjaan ini.';
+                $messageType = 'warning';
+            } else {
+                // Handle file upload
+                $cv_filename = null;
+                if (isset($_FILES['resume_file']) && $_FILES['resume_file']['error'] === UPLOAD_ERR_OK) {
+                    $upload_dir = 'cv/';
                     
-                    if ($insertStmt->execute()) {
-                        $message = 'Lamaran Anda berhasil dikirim!';
-                        $messageType = 'success';
-                        
-                        // Redirect setelah 2 detik
-                        header("refresh:2;url=job-detail.php?id=" . $job_id);
+                    // Buat folder jika belum ada
+                    if (!is_dir($upload_dir)) {
+                        mkdir($upload_dir, 0755, true);
+                    }
+                    
+                    $file_tmp = $_FILES['resume_file']['tmp_name'];
+                    $file_name = $_FILES['resume_file']['name'];
+                    $file_size = $_FILES['resume_file']['size'];
+                    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+                    
+                    // Validasi file
+                    $allowed_ext = ['pdf', 'doc', 'docx'];
+                    $max_size = 5 * 1024 * 1024; // 5MB
+                    
+                    if (!in_array($file_ext, $allowed_ext)) {
+                        $message = 'Format file tidak diizinkan. Gunakan PDF, DOC, atau DOCX.';
+                        $messageType = 'danger';
+                    } elseif ($file_size > $max_size) {
+                        $message = 'Ukuran file terlalu besar. Maksimal 5MB.';
+                        $messageType = 'danger';
                     } else {
-                        $message = 'Terjadi kesalahan saat mengirim lamaran.';
+                        // Generate nama file unik
+                        $cv_filename = 'cv_' . $user_id . '_' . $job_id . '_' . time() . '.' . $file_ext;
+                        $upload_path = $upload_dir . $cv_filename;
+                        
+                        if (!move_uploaded_file($file_tmp, $upload_path)) {
+                            $message = 'Gagal mengupload file CV.';
+                            $messageType = 'danger';
+                            $cv_filename = null;
+                        }
+                    }
+                }
+                
+                // Insert lamaran ke database jika tidak ada error
+                if (empty($message)) {
+                    try {
+                        $insertQuery = "INSERT INTO applications (job_id, user_id, cover_letter, resume_file, application_status, created_at) 
+                                       VALUES (:job_id, :user_id, :cover_letter, :resume_file, 'Tertunda', NOW())";
+                        $insertStmt = $db->prepare($insertQuery);
+                        $insertStmt->bindParam(':job_id', $job_id, PDO::PARAM_INT);
+                        $insertStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                        $insertStmt->bindParam(':cover_letter', $cover_letter, PDO::PARAM_STR);
+                        $insertStmt->bindParam(':resume_file', $cv_filename, PDO::PARAM_STR);
+                        
+                        if ($insertStmt->execute()) {
+                            $message = 'Lamaran Anda berhasil dikirim!';
+                            $messageType = 'success';
+                            header("refresh:2;url=job-detail.php?id=" . $job_id);
+                        } else {
+                            $message = 'Terjadi kesalahan saat mengirim lamaran.';
+                            $messageType = 'danger';
+                        }
+                    } catch (PDOException $e) {
+                        $message = 'Error database: ' . $e->getMessage();
                         $messageType = 'danger';
                     }
-                } catch (PDOException $e) {
-                    $message = 'Error database: ' . $e->getMessage();
-                    $messageType = 'danger';
                 }
             }
+        } catch (PDOException $e) {
+            $message = 'Error database: ' . $e->getMessage();
+            $messageType = 'danger';
         }
     }
 }
 
-// Ambil data job untuk form (GET request)
+// Ambil data job untuk form 
 $job_id = isset($_GET['job_id']) ? (int)$_GET['job_id'] : 0;
 
 if ($job_id <= 0) {
@@ -109,27 +112,41 @@ if ($job_id <= 0) {
     exit();
 }
 
-// Query untuk mengambil detail job
-$jobQuery = "SELECT j.*, c.company_name 
-             FROM jobs j 
-             JOIN companies c ON j.company_id = c.company_id 
-             WHERE j.job_id = :job_id AND j.is_active = 1";
-$jobStmt = $db->prepare($jobQuery);
-$jobStmt->bindParam(':job_id', $job_id);
-$jobStmt->execute();
-$job = $jobStmt->fetch();
+//   detail job
+try {
+    $jobQuery = "SELECT j.*, c.company_name 
+                 FROM jobs j 
+                 JOIN companies c ON j.company_id = c.company_id 
+                 WHERE j.job_id = :job_id AND j.is_active = 1";
+    $jobStmt = $db->prepare($jobQuery);
+    $jobStmt->bindParam(':job_id', $job_id, PDO::PARAM_INT);
+    $jobStmt->execute();
+    $job = $jobStmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$job) {
-    header('Location: jobs.php');
-    exit();
+    if (!$job) {
+        header('Location: jobs.php');
+        exit();
+    }
+} catch (PDOException $e) {
+    die('Error: ' . $e->getMessage());
 }
 
 // Ambil data user
-$userQuery = "SELECT * FROM users WHERE user_id = :user_id";
-$userStmt = $db->prepare($userQuery);
-$userStmt->bindParam(':user_id', $_SESSION['user_id']);
-$userStmt->execute();
-$user = $userStmt->fetch();
+try {
+    $userQuery = "SELECT * FROM users WHERE user_id = :user_id";
+    $userStmt = $db->prepare($userQuery);
+    $userStmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+    $userStmt->execute();
+    $user = $userStmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$user) {
+        session_destroy();
+        header('Location: login.php');
+        exit();
+    }
+} catch (PDOException $e) {
+    die('Error: ' . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -140,43 +157,7 @@ $user = $userStmt->fetch();
     <title>Lamar Pekerjaan - <?php echo htmlspecialchars($job['job_title']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .apply-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 0;
-        }
-        .form-container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin-top: -50px;
-            position: relative;
-            z-index: 10;
-        }
-        .job-info-card {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        .btn-apply {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            font-weight: 600;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-        .btn-apply:hover {
-            background: linear-gradient(45deg, #5a6fd8, #6a4190);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-    </style>
+    <link rel="stylesheet" href="css/apply-j.css">
 </head>
 
 <body>
@@ -187,7 +168,7 @@ $user = $userStmt->fetch();
                 <div class="col-12">
                     <div class="mb-3">
                         <a href="job-detail.php?id=<?php echo $job['job_id']; ?>" class="text-white text-decoration-none">
-                            <i class="fas fa-arrow-left me-2"></i> Kembali ke Detail Pekerjaan
+                            <i class="fa-solid fa-circle-arrow-left"></i> Kembali ke Pekerjaan
                         </a>
                     </div>
                     <h1 class="mb-2">Lamar Pekerjaan</h1>
@@ -206,7 +187,7 @@ $user = $userStmt->fetch();
                         <!-- Alert Messages -->
                         <?php if (!empty($message)): ?>
                             <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show" role="alert">
-                                <?php echo $message; ?>
+                                <?php echo htmlspecialchars($message); ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         <?php endif; ?>

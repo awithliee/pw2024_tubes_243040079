@@ -4,9 +4,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-/**
- * Membuat session login
- */
+// memebuat session login
 function createSession($user_id, $role_id, $full_name, $email) {
     $_SESSION['user_id'] = $user_id;
     $_SESSION['role_id'] = $role_id;
@@ -18,30 +16,26 @@ function createSession($user_id, $role_id, $full_name, $email) {
     session_regenerate_id(true);
 }
 
-/**
- * Cek apakah user sudah login
- */
+//Cek apakah user sudah login
 function isLoggedIn() {
     return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
 }
 
-/**
- * Cek apakah user adalah admin
- */
+
+//Cek apakah user adalah admin
+ 
 function isAdmin() {
     return isLoggedIn() && $_SESSION['role_id'] == 1;
 }
 
-/**
- * Cek apakah user adalah user biasa
- */
+
+//Cek apakah user adalah user biasa
+ 
 function isUser() {
     return isLoggedIn() && $_SESSION['role_id'] == 2;
 }
 
-/**
- * Mendapatkan data user yang sedang login
- */
+//mendapatkan informasi user saat ini
 function getCurrentUser() {
     if(isLoggedIn()) {
         return [
@@ -55,9 +49,7 @@ function getCurrentUser() {
     return null;
 }
 
-/**
- * Logout user
- */
+// Menghapus session dan logout
 function logout() {
     session_unset();
     session_destroy();
@@ -65,9 +57,7 @@ function logout() {
     exit;
 }
 
-/**
- * Redirect jika belum login
- */
+//redirect kalo belum login
 function requireLogin() {
     if(!isLoggedIn()) {
         header('Location: login.php');
@@ -75,9 +65,7 @@ function requireLogin() {
     }
 }
 
-/**
- * Redirect jika bukan admin
- */
+//redirect kalu bukan admin
 function requireAdmin() {
     requireLogin();
     if(!isAdmin()) {
@@ -86,9 +74,7 @@ function requireAdmin() {
     }
 }
 
-/**
- * Mendapatkan nama role
- */
+// Mendapatkan nama peran berdasarkan ID
 function getRoleName($role_id = null) {
     if($role_id === null) {
         $role_id = $_SESSION['role_id'] ?? 0;

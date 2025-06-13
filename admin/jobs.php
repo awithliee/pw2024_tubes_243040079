@@ -104,11 +104,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
                     <!-- Header -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
-                            <h2 class="mb-0">Jobs Management</h2>
-                            <p class="text-muted">Manage all job postings</p>
+                            <h2 class="mb-0">Kelola Lowongan</h2>
+                            <p class="text-muted">Kelola semua Lowongan</p>
                         </div>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addJobModal">
-                            <i class="fas fa-plus me-2"></i>Add New Job
+                            <i class="fas fa-plus me-2"></i>Tambah Lowongan
                         </button>
                     </div>
 
@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
                     <div class="card">
                         <div class="card-header bg-white">
                             <h5 class="mb-0">
-                                <i class="fas fa-briefcase me-2 text-primary"></i>All Jobs
+                                <i class="fas fa-briefcase me-2 text-primary"></i>Semua Lowongan
                             </h5>
                         </div>
                         <div class="card-body">
@@ -139,15 +139,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
                                 <table id="jobsTable" class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Job Title</th>
-                                            <th>Company</th>
-                                            <th>Location</th>
-                                            <th>Type</th>
-                                            <th>Salary Range</th>
-                                            <th>Applications</th>
+                                            <th>Jabatan</th>
+                                            <th>Perusahaan</th>
+                                            <th>Lokasi</th>
+                                            <th>Tipe</th>
+                                            <th>Gaji</th>
+                                            <th>Lamaran</th>
                                             <th>Status</th>
-                                            <th>Deadline</th>
-                                            <th>Actions</th>
+                                            <th>Batas Waktu</th>
+                                            <th>Tindakan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -164,13 +164,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
                                                 </td>
                                                 <td><?= htmlspecialchars($job['salary_range']) ?></td>
                                                 <td>
-                                                    <span class="badge bg-primary"><?= $job['application_count'] ?> applications</span>
+                                                    <span class="badge bg-primary"><?= $job['application_count'] ?> Lamaran</span>
                                                 </td>
                                                 <td>
                                                     <?php if ($job['is_active']): ?>
-                                                        <span class="job-status bg-success text-white">Active</span>
+                                                        <span class="job-status bg-success text-white">Aktif</span>
                                                     <?php else: ?>
-                                                        <span class="job-status bg-danger text-white">Inactive</span>
+                                                        <span class="job-status bg-danger text-white">Tidak aktif</span>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td><?= htmlspecialchars($job['application_deadline']) ?></td>
@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addJobModalLabel">Add New Job</h5>
+                    <h5 class="modal-title" id="addJobModalLabel">Tambahkan Lowogan Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST">
@@ -217,15 +217,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="job_title" class="form-label">Job Title</label>
+                                    <label for="job_title" class="form-label">Jabatan</label>
                                     <input type="text" class="form-control" id="job_title" name="job_title" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="company_id" class="form-label">Company</label>
+                                    <label for="company_id" class="form-label">Perusahaan</label>
                                     <select class="form-control" id="company_id" name="company_id" required>
-                                        <option value="">Select Company</option>
+                                        <option value="">Pilih Perusahaan</option>
                                         <?php foreach ($companies as $company): ?>
                                             <option value="<?= $company['company_id'] ?>"><?= htmlspecialchars($company['company_name']) ?></option>
                                         <?php endforeach; ?>
@@ -236,15 +236,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="job_location" class="form-label">Job Location</label>
+                                    <label for="job_location" class="form-label">Lokasi</label>
                                     <input type="text" class="form-control" id="job_location" name="job_location" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="job_type" class="form-label">Job Type</label>
+                                    <label for="job_type" class="form-label">Tipe Lowongan</label>
                                     <select class="form-control" id="job_type" name="job_type" required>
-                                        <option value="">Select Type</option>
+                                        <option value="">Pilih Tipe</option>
                                         <option value="Full-time">Full-time</option>
                                         <option value="Part-time">Part-time</option>
                                         <option value="Contract">Contract</option>
@@ -257,29 +257,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="salary_range" class="form-label">Salary Range</label>
-                                    <input type="text" class="form-control" id="salary_range" name="salary_range" placeholder="e.g. Rp 5.000.000 - Rp 8.000.000">
+                                    <label for="salary_range" class="form-label">Kisaran Gaji</label>
+                                    <input type="text" class="form-control" id="salary_range" name="salary_range" placeholder="">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="application_deadline" class="form-label">Application Deadline</label>
+                                    <label for="application_deadline" class="form-label">Batas Waktu Pengajuan</label>
                                     <input type="date" class="form-control" id="application_deadline" name="application_deadline" required>
                                 </div>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="job_description" class="form-label">Job Description</label>
+                            <label for="job_description" class="form-label">Deskripsi Lowongan</label>
                             <textarea class="form-control" id="job_description" name="job_description" rows="4" required></textarea>
                         </div>
                         <div class="mb-3">
-                            <label for="job_requirements" class="form-label">Job Requirements</label>
+                            <label for="job_requirements" class="form-label">Persyaratn Lowongan</label>
                             <textarea class="form-control" id="job_requirements" name="job_requirements" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" name="add_job" class="btn btn-primary">Add Job</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" name="add_job" class="btn btn-primary">Tambahkan Lowongan</button>
                     </div>
                 </form>
             </div>
@@ -291,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="jobDetailsModalLabel">Job Details</h5>
+                    <h5 class="modal-title" id="jobDetailsModalLabel">Detail Lowongan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="jobDetailsContent">

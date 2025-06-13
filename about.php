@@ -152,38 +152,6 @@
     </div>
   </section>
 
-  <!-- Stats Section -->
-  <section class="py-5 stats-section">
-    <div class="container">
-      <div class="text-center mb-5">
-        <h2 class="fw-bold">Pencapaian Kami</h2>
-        <p class="text-muted">Angka-angka yang membuktikan kepercayaan Anda</p>
-      </div>
-      <div class="row text-center">
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="stat-number">10K+</div>
-          <h5>Pencari Kerja</h5>
-          <p class="text-muted">Terdaftar di platform kami</p>
-        </div>
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="stat-number">500+</div>
-          <h5>Perusahaan</h5>
-          <p class="text-muted">Mempercayai layanan kami</p>
-        </div>
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="stat-number">5K+</div>
-          <h5>Lowongan Aktif</h5>
-          <p class="text-muted">Tersedia setiap harinya</p>
-        </div>
-        <div class="col-lg-3 col-md-6 mb-4">
-          <div class="stat-number">95%</div>
-          <h5>Tingkat Kepuasan</h5>
-          <p class="text-muted">User yang puas dengan layanan</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Team Section -->
   <section class="py-5">
     <div class="container">

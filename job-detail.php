@@ -92,149 +92,7 @@ $relatedJobs = $relatedStmt->fetchAll();
     <title><?php echo htmlspecialchars($job['job_title']); ?> - <?php echo htmlspecialchars($job['company_name']); ?> | Lamarin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .job-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 0;
-        }
-
-        .company-initial {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(45deg, #007bff, #0056b3);
-            color: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .job-meta {
-            background-color: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .job-type-badge {
-            font-size: 0.875rem;
-            padding: 6px 12px;
-            border-radius: 20px;
-        }
-
-        .salary-highlight {
-            background: linear-gradient(45deg, #28a745, #20c997);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: bold;
-        }
-
-        .apply-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-        }
-
-        .apply-btn:hover {
-            background: linear-gradient(45deg, #5a6fd8, #6a4190);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .apply-btn:disabled {
-            background: #6c757d;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .deadline-warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-
-        .deadline-danger {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            padding: 10px 15px;
-            border-radius: 8px;
-        }
-
-        .section-title {
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #667eea;
-        }
-
-        .job-requirement {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-
-        .company-info {
-            background-color: white;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .related-job-card {
-            background-color: white;
-            border: 1px solid #e9ecef;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .related-job-card:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
-        .job-stats {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            flex: 1;
-        }
-
-        .stat-number {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .stat-label {
-            font-size: 0.875rem;
-            opacity: 0.8;
-        }
-    </style>
+    <link rel="stylesheet" href="css/job-d.css">
 </head>
 
 <body>
@@ -356,7 +214,7 @@ $relatedJobs = $relatedStmt->fetchAll();
                         </div>
                     <?php endif; ?>
 
-                    <!-- Application Process -->
+                    <!-- proses lamaran -->
                     <div class="mb-5">
                         <h3 class="section-title">Cara Melamar</h3>
                         <div class="job-requirement">
