@@ -175,9 +175,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_job'])) {
                                                 </td>
                                                 <td><?= htmlspecialchars($job['application_deadline']) ?></td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-info btn-action" onclick="viewJob(<?= $job['job_id'] ?>)" title="View Details">
-                                                        <i class="fas fa-eye"></i>
-                                                    </button>
                                                     <?php if ($job['is_active']): ?>
                                                         <a href="jobs.php?delete=<?= $job['job_id'] ?>"
                                                             class="btn btn-sm btn-warning btn-action"
