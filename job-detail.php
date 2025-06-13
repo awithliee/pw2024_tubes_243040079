@@ -1,16 +1,15 @@
 <?php
-// job-detail.php
 require_once 'config/database.php';
 
-// Get job ID from URL
+// id dari url
 $job_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($job_id <= 0) {
     header('Location: jobs.php');
-    exit;
+    exit();
 }
 
-// Get job details with company information
+// detail job dari db company
 $query = "SELECT j.*, c.company_name, c.company_address, c.company_description, 
                  c.website, c.industry, c.company_location,
                  u.full_name as posted_by_name
@@ -29,7 +28,7 @@ if (!$job) {
     exit;
 }
 
-// Format date function
+// atur tanggal
 function formatTanggal($tanggal)
 {
     if (empty($tanggal)) return '';
@@ -51,14 +50,14 @@ function formatTanggal($tanggal)
     return $split[2] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[0];
 }
 
-// Function to check if deadline has passed
+//deadline 
 function isDeadlinePassed($deadline)
 {
     if (empty($deadline)) return false;
     return strtotime($deadline) < time();
 }
 
-// Function to check if deadline is approaching (within 7 days)
+// fungsi mengecek deadline
 function isDeadlineApproaching($deadline)
 {
     if (empty($deadline)) return false;
@@ -68,7 +67,7 @@ function isDeadlineApproaching($deadline)
     return $daysDiff <= 7 && $daysDiff > 0;
 }
 
-// Get related jobs from same company
+//menampilkan lowongan dari perusahaan yang sama
 $relatedQuery = "SELECT j.*, c.company_name 
                  FROM jobs j 
                  JOIN companies c ON j.company_id = c.company_id 
@@ -211,17 +210,6 @@ $relatedJobs = $relatedStmt->fetchAll();
             transform: translateY(-2px);
         }
 
-        .breadcrumb {
-            background-color: transparent;
-            padding: 0;
-            margin-bottom: 20px;
-        }
-
-        .breadcrumb-item a {
-            color: white;
-            text-decoration: none;
-        }
-
         .job-stats {
             display: flex;
             gap: 20px;
@@ -250,7 +238,6 @@ $relatedJobs = $relatedStmt->fetchAll();
 </head>
 
 <body>
-
     <!-- Job Header -->
     <section class="job-header">
         <div class="container">
@@ -261,7 +248,6 @@ $relatedJobs = $relatedStmt->fetchAll();
                     Kembali ke daftar lowongan
                 </a>
             </div>
-
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <div class="d-flex align-items-center mb-3">
@@ -323,13 +309,14 @@ $relatedJobs = $relatedStmt->fetchAll();
                             <i class="fas fa-clock me-2"></i>
                             Batas lamaran: <?php echo formatTanggal($job['application_deadline']); ?>
                         </div>
-                        <button class="btn apply-btn" onclick="applyForJob(<?php echo $job['job_id']; ?>)">
+                        <!-- SOLUSI ALTERNATIF - DIRECT LINK -->
+                        <a href="apply-job.php?job_id=<?php echo $job['job_id']; ?>" class="btn apply-btn">
                             <i class="fas fa-paper-plane me-2"></i> Lamar Sekarang
-                        </button>
+                        </a>
                     <?php else: ?>
-                        <button class="btn apply-btn" onclick="applyForJob(<?php echo $job['job_id']; ?>)">
+                        <a href="apply-job.php?job_id=<?php echo $job['job_id']; ?>" class="btn apply-btn">
                             <i class="fas fa-paper-plane me-2"></i> Lamar Sekarang
-                        </button>
+                        </a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -377,7 +364,6 @@ $relatedJobs = $relatedStmt->fetchAll();
                             <ul>
                                 <li>Melengkapi profil Anda</li>
                                 <li>Mengunggah CV terbaru</li>
-                                <li>Menyiapkan surat lamaran</li>
                                 <li>Memastikan semua persyaratan terpenuhi</li>
                             </ul>
                         </div>
@@ -527,18 +513,6 @@ $relatedJobs = $relatedStmt->fetchAll();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function applyForJob(jobId) {
-            // Check if user is logged in
-            <?php if (!isset($_SESSION['user_id'])): ?>
-                alert('Silakan login terlebih dahulu untuk melamar pekerjaan ini.');
-                window.location.href = 'login.php?redirect=job-detail.php?id=' + jobId;
-                return;
-            <?php endif; ?>
-
-            // Redirect to application form
-            window.location.href = 'apply-job.php?job_id=' + jobId;
-        }
-
         function shareJob(platform) {
             const jobTitle = '<?php echo htmlspecialchars($job['job_title']); ?>';
             const companyName = '<?php echo htmlspecialchars($job['company_name']); ?>';
@@ -603,7 +577,7 @@ $relatedJobs = $relatedStmt->fetchAll();
             document.body.removeChild(textArea);
         }
 
-        // Add bookmark functionality
+        // buat fungsi untuk bookmark job
         function bookmarkJob(jobId) {
             <?php if (!isset($_SESSION['user_id'])): ?>
                 alert('Silakan login terlebih dahulu.');

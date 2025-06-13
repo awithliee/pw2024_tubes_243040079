@@ -16,9 +16,8 @@ $stmt->bindParam(':user_id', $_SESSION['user_id']);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Get statistics for dashboard
+// Get statistics for dashboard (removed job-related stats)
 $stats_query = "SELECT 
-    (SELECT COUNT(*) FROM jobs WHERE is_active = 1) as total_jobs,
     (SELECT COUNT(*) FROM applications WHERE user_id = :user_id) as my_applications,
     (SELECT COUNT(*) FROM applications WHERE user_id = :user_id AND application_status = 'Pending') as pending_applications,
     (SELECT COUNT(*) FROM companies) as total_companies";
@@ -26,15 +25,6 @@ $stats_stmt = $db->prepare($stats_query);
 $stats_stmt->bindParam(':user_id', $_SESSION['user_id']);
 $stats_stmt->execute();
 $stats = $stats_stmt->fetch(PDO::FETCH_ASSOC);
-
-// Get recent job postings
-$recent_jobs_query = "SELECT j.*, c.company_name FROM jobs j 
-                      JOIN companies c ON j.company_id = c.company_id 
-                      WHERE j.is_active = 1 
-                      ORDER BY j.created_at DESC LIMIT 5";
-$recent_jobs_stmt = $db->prepare($recent_jobs_query);
-$recent_jobs_stmt->execute();
-$recent_jobs = $recent_jobs_stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -105,13 +95,14 @@ $recent_jobs = $recent_jobs_stmt->fetchAll(PDO::FETCH_ASSOC);
             padding: 20px;
         }
 
-        .job-card {
-            border-left: 4px solid #667eea;
-        }
-
         .navbar-brand {
             font-weight: bold;
             color: #667eea !important;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
         }
     </style>
 </head>
@@ -132,9 +123,6 @@ $recent_jobs = $recent_jobs_stmt->fetchAll(PDO::FETCH_ASSOC);
                     <nav class="nav flex-column">
                         <a class="nav-link active" href="dashboard.php">
                             <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-                        </a>
-                        <a class="nav-link" href="browse-jobs.php">
-                            <i class="fas fa-search me-2"></i>cari Lowongan
                         </a>
                         <a class="nav-link" href="my-applications.php">
                             <i class="fas fa-file-alt me-2"></i>Lamaran Saya
@@ -166,16 +154,7 @@ $recent_jobs = $recent_jobs_stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="container-fluid px-4">
                     <!-- Statistics Cards -->
                     <div class="row mb-4">
-                        <div class="col-md-3 mb-3">
-                            <div class="card stat-card">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-briefcase fa-2x mb-3"></i>
-                                    <h3><?php echo $stats['total_jobs']; ?></h3>
-                                    <p class="mb-0">Total Lowongan</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-4 mb-3">
                             <div class="card stat-card-success">
                                 <div class="card-body text-center">
                                     <i class="fas fa-file-alt fa-2x mb-3"></i>
@@ -184,7 +163,7 @@ $recent_jobs = $recent_jobs_stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-4 mb-3">
                             <div class="card stat-card-warning">
                                 <div class="card-body text-center">
                                     <i class="fas fa-clock fa-2x mb-3"></i>
@@ -193,7 +172,7 @@ $recent_jobs = $recent_jobs_stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 mb-3">
+                        <div class="col-md-4 mb-3">
                             <div class="card stat-card-info">
                                 <div class="card-body text-center">
                                     <i class="fas fa-building fa-2x mb-3"></i>
@@ -206,7 +185,7 @@ $recent_jobs = $recent_jobs_stmt->fetchAll(PDO::FETCH_ASSOC);
 
                     <div class="row">
                         <!-- Profile Summary -->
-                        <div class="col-md-4 mb-4">
+                        <div class="col-md-6 mb-4">
                             <div class="profile-section">
                                 <h5 class="mb-3"><i class="fas fa-user me-2"></i>Profil Saya</h5>
                                 <div class="text-center mb-3">
@@ -223,50 +202,26 @@ $recent_jobs = $recent_jobs_stmt->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
 
-                        <!-- Recent Jobs -->
-                        <div class="col-md-8 mb-4">
-                            <div class="card">
-                                <div class="card-header bg-white">
-                                    <h5 class="mb-0">
-                                        <i class="fas fa-star me-2 text-warning"></i>Lowongan Terbaru
-                                    </h5>
-                                </div>
+                        <!-- Information Card -->
+                        <div class="col-md-6 mb-4">
+                            <div class="card info-card">
                                 <div class="card-body">
-                                    <?php if (empty($recent_jobs)): ?>
-                                        <div class="text-center text-muted py-4">
-                                            <i class="fas fa-briefcase fa-3x mb-3 opacity-50"></i>
-                                            <p>Belum ada lowongan pekerjaan tersedia</p>
-                                        </div>
-                                    <?php else: ?>
-                                        <?php foreach ($recent_jobs as $job): ?>
-                                            <div class="job-card card mb-3">
-                                                <div class="card-body">
-                                                    <div class="d-flex justify-content-between align-items-start">
-                                                        <div>
-                                                            <h6 class="card-title mb-1"><?php echo htmlspecialchars($job['job_title']); ?></h6>
-                                                            <p class="text-muted mb-2">
-                                                                <i class="fas fa-building me-1"></i><?php echo htmlspecialchars($job['company_name']); ?> |
-                                                                <i class="fas fa-map-marker-alt me-1"></i><?php echo htmlspecialchars($job['job_location']); ?>
-                                                            </p>
-                                                            <p class="card-text small"><?php echo substr(htmlspecialchars($job['job_description']), 0, 100) . '...'; ?></p>
-                                                            <div class="d-flex align-items-center">
-                                                                <span class="badge bg-primary me-2"><?php echo $job['job_type']; ?></span>
-                                                                <small class="text-success fw-bold"><?php echo htmlspecialchars($job['salary_range']); ?></small>
-                                                            </div>
-                                                        </div>
-                                                        <a href="browse-jobs.php?job_id=<?php echo $job['job_id']; ?>" class="btn btn-outline-primary btn-sm">
-                                                            <i class="fas fa-eye me-1"></i>Lihat
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php endforeach; ?>
-                                        <div class="text-center">
-                                            <a href="browse-jobs.php" class="btn btn-primary">
-                                                <i class="fas fa-search me-2"></i>Lihat Semua Lowongan
-                                            </a>
-                                        </div>
-                                    <?php endif; ?>
+                                    <h5 class="card-title">
+                                        <i class="fas fa-info-circle me-2"></i>Informasi
+                                    </h5>
+                                    <p class="card-text">
+                                        Selamat datang di dashboard Lamarin Job Portal! Dari sini Anda dapat:
+                                    </p>
+                                    <ul class="list-unstyled">
+                                        <li><i class="fas fa-check me-2"></i>Mengelola lamaran pekerjaan Anda</li>
+                                        <li><i class="fas fa-check me-2"></i>Memperbarui profil pribadi</li>
+                                        <li><i class="fas fa-check me-2"></i>Melihat status aplikasi</li>
+                                    </ul>
+                                    <div class="d-grid mt-3">
+                                        <a href="my-applications.php" class="btn btn-light btn-sm">
+                                            <i class="fas fa-arrow-right me-1"></i>Lihat Lamaran Saya
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
