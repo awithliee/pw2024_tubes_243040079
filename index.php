@@ -81,20 +81,6 @@
                     <div class="col-lg-8">
                         <h1 class="display-4 fw-bold mb-4">Temukan Karir Impian Anda</h1>
                         <p class="lead mb-5">Portal lowongan kerja terpercaya dengan ribuan peluang karir dari perusahaan terkemuka di seluruh Indonesia</p>
-
-                        <!-- Search Bar -->
-                        <form action="search.php" method="GET" class="search-form">
-                            <div class="row">
-                                <div class="d-flex align-items-center rounded-pill col-md-10 mb-3 md-2">
-                                    <input type="text" name="keyword" class="form-control form-control-lg rounded-pill" placeholder="Posisi, nama perusahaan, atau keahlian...">
-                                </div>
-                                <div class="col-md-2 mb-3">
-                                    <button type="submit" class="btn btn-light d-flex align-items-center rounded-pill w-100">
-                                        <i class="fas fa-search me-1"></i>Cari
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                     <div class="col-lg-4">
                         <div class="text-center">

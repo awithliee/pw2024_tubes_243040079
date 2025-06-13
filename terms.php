@@ -23,7 +23,7 @@
 
     <div class="container section">
         <h2>Kebijakan Privasi</h2>
-        <p>Kami berkomitmen untuk melindungi dan menghormati privasi Anda. Informasi yang kami kumpulkan digunakan untuk meningkatkan pengalaman Anda dan memastikan layanan kami berfungsi dengan baik.</p>
+        <p>Kami berkomitmen untuk melindungi dan menghormati privasi Anda. Informasi yang kami kumpulkan digunakan untuk meningkatkan pengalaman Anda dan memastikan layanan kami berfungsi dengan baik.👍🏻</p>
         <ul>
             <li><strong>Pengumpulan Data:</strong> Kami mengumpulkan data pribadi yang Anda berikan saat menggunakan layanan kami, termasuk nama, alamat email, dan informasi lain yang relevan.</li>
             <li><strong>Penggunaan Data:</strong> Data yang dikumpulkan digunakan untuk tujuan internal seperti peningkatan produk, komunikasi, dan keamanan.</li>
